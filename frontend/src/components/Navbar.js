@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav style={{ background: '#1a1410', display: 'flex', alignItems: 'center', justifyContent: 'space-end', padding: '0 2rem', height: '64px', position: 'sticky', top: 0, zIndex: 100 }}>
+      <nav style={{ background: '#1a1410', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 2rem', height: '64px', position: 'sticky', top: 0, zIndex: 100 }}>
           <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <Link to="/" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '13px' }}>Shop</Link>
           <Link to="/track" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '13px' }}>Track Order</Link>
