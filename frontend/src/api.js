@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: '/api' });
+const API = axios.create({ baseURL: 'https://shamil-shoe-palace-6mh6.vercel.app/api' });
 
 // Attach token for admin routes
 API.interceptors.request.use((config) => {
