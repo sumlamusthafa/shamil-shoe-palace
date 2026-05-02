@@ -10,13 +10,7 @@ export default function Navbar() {
   return (
     <>
       <nav style={{ background: '#1a1410', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 2rem', height: '64px', position: 'sticky', top: 0, zIndex: 100 }}>
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <div style={{ fontFamily: 'Georgia, serif', color: '#C9A84C', fontSize: '18px' }}>
-            Shamil Shoe Palace
-            
-          </div>
-        </Link>
-        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <Link to="/" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '13px' }}>Shop</Link>
           <Link to="/track" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '13px' }}>Track Order</Link>
           <button onClick={() => setCartOpen(true)}
