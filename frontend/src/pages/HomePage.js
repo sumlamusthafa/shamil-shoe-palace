@@ -53,7 +53,7 @@ export default function HomePage() {
 
       {/* Hero */}
       <div style={{ background: '#1a1410', padding: '3rem 2rem', textAlign: 'center' }}>
-        <p style={{ color: '#C9A84C', letterSpacing: '3px', fontSize: '12px', marginBottom: '2rem' }}>ODDAMAVADI · EST. 2003 · ISLAND-WIDE DELIVERY</p>
+        <p style={{ color: '#C9A84C', letterSpacing: '3px', fontSize: '12px', marginBottom: '4rem' }}>ODDAMAVADI · EST. 2003 · ISLAND-WIDE DELIVERY</p>
         <h1 style={{ color: '#fff', fontSize: '3.5rem', marginBottom: '0.75rem', fontWeight: 'normal' }}>
           Shamil <span style={{ color: '#C9A84C' }}>Shoe Palace</span>
         </h1>
