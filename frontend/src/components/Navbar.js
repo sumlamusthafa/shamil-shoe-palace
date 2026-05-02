@@ -13,7 +13,7 @@ export default function Navbar() {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div style={{ fontFamily: 'Georgia, serif', color: '#C9A84C', fontSize: '18px' }}>
             Shamil Shoe Palace
-            <span style={{ display: 'block', color: 'rgba(255,255,255,0.4)', fontSize: '10px', letterSpacing: '2px', fontFamily: 'sans-serif' }}>ODDAMAVADI, SRI LANKA</span>
+            
           </div>
         </Link>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>

@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import Navbar from '../components/Navbar';
 
 const CATEGORIES = ['all','school','office','athletic','casual','ladies','slippers','sandals','bata'];
+const CATEGORY_LABELS = { all:'All', school:'School Shoes', office:'Office Shoes', athletic:'Athletic Shoes', casual:'Casual Shoes', ladies:'Ladies Shoes', slippers:'Slippers', sandals:'Sandals', bata:'Bata' };
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
@@ -52,16 +53,14 @@ export default function HomePage() {
 
       {/* Hero */}
       <div style={{ background: '#1a1410', padding: '3rem 2rem', textAlign: 'center' }}>
-        <p style={{ color: '#C9A84C', letterSpacing: '3px', fontSize: '12px', marginBottom: '0.75rem' }}>ODDAMAVADI · EST. 2003 · ISLAND-WIDE DELIVERY</p>
-        <h1 style={{ color: '#fff', fontSize: '2.5rem', marginBottom: '0.75rem', fontWeight: 'normal' }}>
+        <p style={{ color: '#C9A84C', letterSpacing: '3px', fontSize: '12px', marginBottom: '2rem' }}>ODDAMAVADI · EST. 2003 · ISLAND-WIDE DELIVERY</p>
+        <h1 style={{ color: '#fff', fontSize: '3.5rem', marginBottom: '0.75rem', fontWeight: 'normal' }}>
           Shamil <span style={{ color: '#C9A84C' }}>Shoe Palace</span>
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '15px', maxWidth: '500px', margin: '0 auto 1.5rem' }}>
           22 years of quality footwear — now available online across Sri Lanka
         </p>
-        <Link to="/track" style={{ background: 'transparent', border: '1px solid #C9A84C', color: '#C9A84C', padding: '10px 24px', borderRadius: '4px', textDecoration: 'none', fontSize: '13px' }}>
-          Track your order →
-        </Link>
+       
       </div>
 
       {/* Search & Filters */}
@@ -96,7 +95,7 @@ export default function HomePage() {
         {CATEGORIES.map(cat => (
           <button key={cat} onClick={() => setCategory(cat)}
             style={{ padding: '6px 16px', borderRadius: '20px', border: '1px solid #ddd', background: category === cat ? '#1a1410' : '#fff', color: category === cat ? '#C9A84C' : '#666', cursor: 'pointer', fontSize: '13px', fontFamily: 'inherit', textTransform: 'capitalize' }}>
-            {cat === 'all' ? 'All' : cat}
+            {CATEGORY_LABELS[cat]}
           </button>
         ))}
       </div>
