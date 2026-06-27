@@ -3,12 +3,12 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const { protect } = require('../middleware/auth');
 const router = express.Router();
-
+ 
 // POST /api/orders — public (guest checkout)
 router.post('/', async (req, res) => {
   try {
     const { customer, items, paymentMethod } = req.body;
-
+ 
     // Calculate total & validate stock
     let totalAmount = 0;
     const orderItems = [];
@@ -29,9 +29,9 @@ router.post('/', async (req, res) => {
         image: product.images[0] || ''
       });
     }
-
+ 
     const order = await Order.create({ customer, items: orderItems, totalAmount, paymentMethod });
-
+ 
     // Deduct stock
     for (const item of items) {
       await Product.updateOne(
@@ -39,13 +39,13 @@ router.post('/', async (req, res) => {
         { $inc: { 'sizes.$.stock': -item.quantity } }
       );
     }
-
+ 
     res.status(201).json({ order, message: 'Order placed successfully' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
-
+ 
 // GET /api/orders/track/:orderNumber — public order tracking
 router.get('/track/:orderNumber', async (req, res) => {
   try {
@@ -64,7 +64,7 @@ router.get('/track/:orderNumber', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
+ 
 // GET /api/orders — admin only
 router.get('/', protect, async (req, res) => {
   try {
@@ -81,17 +81,26 @@ router.get('/', protect, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
+ 
 // PUT /api/orders/:id/status — admin only
 router.put('/:id/status', protect, async (req, res) => {
   try {
     const { orderStatus, message } = req.body;
+ 
+    const updateData = {
+      orderStatus,
+      $push: { trackingUpdates: { status: orderStatus, message: message || `Order ${orderStatus}` } }
+    };
+ 
+    // Auto-mark COD orders as paid when delivered
+    const existingOrder = await Order.findById(req.params.id);
+    if (existingOrder && orderStatus === 'delivered' && existingOrder.paymentMethod === 'cod') {
+      updateData.paymentStatus = 'paid';
+    }
+ 
     const order = await Order.findByIdAndUpdate(
       req.params.id,
-      {
-        orderStatus,
-        $push: { trackingUpdates: { status: orderStatus, message: message || `Order ${orderStatus}` } }
-      },
+      updateData,
       { new: true }
     );
     if (!order) return res.status(404).json({ message: 'Order not found' });
@@ -100,5 +109,5 @@ router.put('/:id/status', protect, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
+ 
 module.exports = router;
