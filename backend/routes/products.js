@@ -1,24 +1,20 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../cloudinary');
 const Product = require('../models/Product');
 const { protect } = require('../middleware/auth');
 const router = express.Router();
 
-// Multer config for image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
+// Cloudinary storage config for multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'shamil-shoe-palace',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp']
+  }
 });
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (['.jpg', '.jpeg', '.png', '.webp'].includes(ext)) cb(null, true);
-    else cb(new Error('Only images allowed'));
-  },
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
-});
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 // GET /api/products — public, with filters
 router.get('/', async (req, res) => {
@@ -61,7 +57,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', protect, upload.array('images', 5), async (req, res) => {
   try {
     const data = JSON.parse(req.body.data || '{}');
-    const images = req.files?.map(f => `/uploads/${f.filename}`) || [];
+    const images = req.files?.map(f => f.path) || [];
     const product = await Product.create({ ...data, images });
     res.status(201).json(product);
   } catch (err) {
@@ -73,7 +69,7 @@ router.post('/', protect, upload.array('images', 5), async (req, res) => {
 router.put('/:id', protect, upload.array('images', 5), async (req, res) => {
   try {
     const data = JSON.parse(req.body.data || '{}');
-    const newImages = req.files?.map(f => `/uploads/${f.filename}`) || [];
+    const newImages = req.files?.map(f => f.path) || [];
     if (newImages.length) data.images = newImages;
     const product = await Product.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true });
     if (!product) return res.status(404).json({ message: 'Product not found' });
