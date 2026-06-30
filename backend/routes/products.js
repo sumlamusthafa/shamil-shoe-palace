@@ -54,7 +54,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/products — admin only
-router.post('/', protect, upload.array('images', 5), async (req, res) => {
+router.post('/', protect, upload.any(), async (req, res) => {
   try {
     const data = JSON.parse(req.body.data || '{}');
     const images = req.files?.map(f => f.path) || [];
@@ -66,7 +66,7 @@ router.post('/', protect, upload.array('images', 5), async (req, res) => {
 });
 
 // PUT /api/products/:id — admin only
-router.put('/:id', protect, upload.array('images', 5), async (req, res) => {
+router.put('/:id', protect, upload.any(), async (req, res) => {
   try {
     const data = JSON.parse(req.body.data || '{}');
     const newImages = req.files?.map(f => f.path) || [];
