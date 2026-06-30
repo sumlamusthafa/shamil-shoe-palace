@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { getProducts } from '../api';
 import { useCart } from '../context/CartContext';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import CartDrawer from '../components/CartDrawer';
 
 const CATEGORIES = ['all','school','office','athletic','casual','ladies','slippers','sandals','bata'];
 const CATEGORY_LABELS = { all:'All', school:'School Shoes', office:'Office Shoes', athletic:'Athletic Shoes', casual:'Casual Shoes', ladies:'Ladies Shoes', slippers:'Slippers', sandals:'Sandals', bata:'Bata' };
@@ -14,6 +16,7 @@ export default function HomePage() {
   const [category, setCategory] = useState('all');
   const [size, setSize] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [cartOpen, setCartOpen] = useState(false);
   const { dispatch, count } = useCart();
   const [toast, setToast] = useState('');
 
@@ -52,15 +55,18 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero */}
-      <div style={{ background: '#1a1410', padding: '3rem 2rem', textAlign: 'center' }}>
-        <p style={{ color: '#C9A84C', letterSpacing: '3px', fontSize: '12px', marginBottom: '4rem' }}>ODDAMAVADI · EST. 2003 · ISLAND-WIDE DELIVERY</p>
+      <div style={{ background: '#1a1410', padding: '3rem 2rem', textAlign: 'center', position: 'relative' }}>
+        <p style={{ color: '#C9A84C', letterSpacing: '3px', fontSize: '12px', marginBottom: '2rem' }}>ODDAMAVADI · EST. 2003 · ISLAND-WIDE DELIVERY</p>
         <h1 style={{ color: '#fff', fontSize: '3.5rem', marginBottom: '0.75rem', fontWeight: 'normal' }}>
           Shamil <span style={{ color: '#C9A84C' }}>Shoe Palace</span>
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '15px', maxWidth: '500px', margin: '0 auto 1.5rem' }}>
           22 years of quality footwear — now available online across Sri Lanka
         </p>
-       
+        <button onClick={() => setCartOpen(true)}
+          style={{ position: 'absolute', bottom: '16px', right: '16px', background: '#C9A84C', color: '#1a1410', border: 'none', padding: '10px 18px', borderRadius: '50px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          🛒 Cart {count > 0 && <span style={{ background: 'rgba(26,20,16,0.2)', borderRadius: '10px', padding: '1px 7px', fontSize: '11px' }}>{count}</span>}
+        </button>
       </div>
 
       {/* Search & Filters */}
@@ -140,6 +146,10 @@ export default function HomePage() {
           ✓ {toast}
         </div>
       )}
+
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+
+      <Footer />
     </div>
   );
 }
