@@ -16,8 +16,24 @@ app.use('/api/admin', require('../routes/admin'));
 app.get('/', (req, res) => res.json({ message: 'Shamil Shoe Palace API running ✅' }));
 app.get('/api', (req, res) => res.json({ message: 'Shamil Shoe Palace API running ✅' }));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB error:', err));
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) return;
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      bufferCommands: false,
+    });
+    isConnected = true;
+    console.log('MongoDB connected');
+  } catch (err) {
+    console.error('MongoDB error:', err);
+    isConnected = false;
+  }
+};
+
+connectDB();
 
 module.exports = app;
